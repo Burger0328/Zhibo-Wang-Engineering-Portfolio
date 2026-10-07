@@ -315,7 +315,7 @@ h1,h2,h3,.site-name,.project-card a,.contact-panel a { overflow-wrap:anywhere; }
 body { max-width:90rem;padding-inline:clamp(1rem,3vw,3rem);letter-spacing:-.012em; }
 .site-header { position:sticky;top:0;z-index:50;padding:1.15rem 0;background:color-mix(in srgb,var(--background) 84%,transparent);border-color:color-mix(in srgb,var(--border) 72%,transparent);backdrop-filter:blur(1.25rem); }
 .site-name { font-size:1rem;font-weight:700;letter-spacing:-.035em; }
-nav a { display:inline-flex;align-items:center;min-height:2.35rem;color:var(--muted);font:500 .82rem "IBM Plex Mono",monospace;letter-spacing:.035em;text-transform:uppercase; }
+nav a { display:inline-flex;align-items:center;min-height:2.5rem;color:var(--muted);font:600 .9rem "IBM Plex Mono",monospace;letter-spacing:.025em;text-transform:uppercase; }
 nav a[aria-current="page"] { text-decoration:none; }
 nav a[aria-current="page"]::before { content:"";width:.9rem;height:1px;margin-right:.4rem;background:currentColor; }
 .theme-picker label { color:var(--muted);font-size:.62rem;text-transform:uppercase; }
@@ -355,7 +355,7 @@ input:focus,textarea:focus,select:focus { border-color:var(--text); }
 
 /* The project index is the experience, not a page containing the experience. */
 body.project-index-page { width:100%;max-width:none;height:100svh;padding:0;overflow:hidden;background:#090909; }
-.project-index-page .site-header { position:fixed;top:0;right:clamp(1rem,3vw,3rem);left:clamp(1rem,3vw,3rem);z-index:200;color:#f5f5f2;background:transparent;border-color:rgb(255 255 255 / 16%);backdrop-filter:none; }
+.project-index-page .site-header { position:fixed;top:0;right:0;left:0;z-index:200;padding-right:clamp(1rem,3vw,3rem);padding-left:clamp(1rem,3vw,3rem);color:#f5f5f2;background:transparent;border-color:rgb(255 255 255 / 16%);backdrop-filter:none; }
 .project-index-page .site-name,.project-index-page nav a { color:#aaa9a3; }
 .project-index-page .site-name:hover,.project-index-page nav a:hover,.project-index-page nav a[aria-current="page"] { color:#fff; }
 .project-index-page .theme-picker label { color:#888; }
@@ -378,7 +378,7 @@ body.project-index-page { width:100%;max-width:none;height:100svh;padding:0;over
   .page-hero > .eyebrow { margin-bottom:.85rem;font-size:clamp(3rem,15vw,4.5rem); }
   .page-home .hero > div > .eyebrow { max-width:34ch;font-size:.82rem;line-height:1.25;white-space:normal; }
   .site-footer { margin-top:5rem; }
-  .project-index-page .site-header { display:grid;grid-template-columns:1fr;right:1rem;left:1rem;gap:.65rem; }
+  .project-index-page .site-header { display:grid;grid-template-columns:1fr;right:0;left:0;gap:.65rem;padding-right:1rem;padding-left:1rem; }
   .project-index-page .theme-picker { display:none; }
   .project-index-page .site-header nav { grid-row:2;grid-column:1; }
   .project-index-page .site-header nav ul { min-width:100%; }
@@ -396,8 +396,8 @@ body.project-index-page { width:100%;max-width:none;height:100svh;padding:0;over
 /* Keep the immersive project index fully synchronized with the selected
    light, dark, or system theme. */
 body.project-index-page { color:var(--text);background:var(--background); }
-.project-index-page .site-header { color:var(--text);border-color:color-mix(in srgb,var(--text) 16%,transparent); }
-.project-index-page .site-name,.project-index-page nav a { color:var(--muted); }
+.project-index-page .site-header { color:var(--text);background:var(--background);border-color:color-mix(in srgb,var(--text) 16%,transparent);box-shadow:0 .75rem 1.75rem color-mix(in srgb,var(--background) 86%,transparent);backdrop-filter:none; }
+.project-index-page .site-name,.project-index-page nav a { color:var(--text); }
 .project-index-page .site-name:hover,.project-index-page nav a:hover,.project-index-page nav a[aria-current="page"] { color:var(--text); }
 .project-index-page .theme-picker label { color:var(--muted); }
 .project-index-page .theme-picker input { accent-color:var(--text); }
