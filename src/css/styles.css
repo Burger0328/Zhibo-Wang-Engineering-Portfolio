@@ -327,7 +327,7 @@ h2 { font-weight:500;letter-spacing:-.055em; }
 .eyebrow,.project-number,.signal-label,.timeline-date,.stack { color:var(--muted);font-weight:500;letter-spacing:.11em; }
 .page-hero { max-width:78rem;padding-top:0; }
 .page-hero > .eyebrow { margin:0 0 1rem;font:600 clamp(3rem,5vw,5.75rem)/.82 "Oxanium",Arial,sans-serif;letter-spacing:-.06em;text-transform:uppercase; }
-.page-home .hero > div > .eyebrow { max-width:24ch;margin:0 0 1rem;font:600 clamp(1.75rem,3.2vw,3.6rem)/1.05 "Oxanium",Arial,sans-serif;letter-spacing:-.035em;text-transform:uppercase; }
+.page-home .hero > div > .eyebrow { max-width:none;margin:0 0 1rem;font:600 clamp(1rem,1.55vw,1.3rem)/1.15 "Oxanium",Arial,sans-serif;letter-spacing:.025em;text-transform:uppercase;white-space:nowrap; }
 .page-home .hero h1,.page-about .page-hero h1,.page-experience .page-hero h1,.page-contact .page-hero h1 { font-family:"IBM Plex Sans",Arial,sans-serif;font-weight:500;letter-spacing:-.04em;word-spacing:.1em; }
 .page-hero .intro { max-width:54rem; }
 .button-link,button { color:var(--background);background:var(--text);border:1px solid var(--text);border-radius:999px;box-shadow:none;font-weight:700; }
@@ -376,6 +376,7 @@ body.project-index-page { width:100%;max-width:none;height:100svh;padding:0;over
   .site-header { position:sticky; }
   .page-hero { padding-top:0; }
   .page-hero > .eyebrow { margin-bottom:.85rem;font-size:clamp(3rem,15vw,4.5rem); }
+  .page-home .hero > div > .eyebrow { max-width:34ch;font-size:.82rem;line-height:1.25;white-space:normal; }
   .site-footer { margin-top:5rem; }
   .project-index-page .site-header { display:grid;grid-template-columns:1fr;right:1rem;left:1rem;gap:.65rem; }
   .project-index-page .theme-picker { display:none; }
