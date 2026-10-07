@@ -49,7 +49,7 @@ p { max-width:70ch; }
 .intro { max-width:65ch;color:var(--muted);font-size:clamp(1.1rem,2vw,1.35rem); }
 .muted { color:var(--muted); }
 
-.hero { display:grid;grid-template-columns:minmax(0,1.6fr) minmax(18rem,.7fr);gap:clamp(2rem,6vw,6rem);align-items:end;min-height:68vh;padding:4rem 0 2rem; }
+.hero { display:grid;grid-template-columns:minmax(0,1.6fr) minmax(18rem,.7fr);gap:clamp(2rem,6vw,6rem);align-items:end;min-height:clamp(24rem,52vh,36rem);padding:0 0 2rem; }
 .hero h1 { margin:.25em 0; }
 .hero-actions { display:flex;flex-wrap:wrap;align-items:center;gap:1rem;margin-top:2rem; }
 .button-link,button { display:inline-block;padding:.78rem 1.15rem;color:#07140f;background:var(--signal);border:1px solid #07140f;border-radius:999px;font-weight:800;text-decoration:none;box-shadow:.22rem .22rem 0 #07140f;transition:transform .15s,box-shadow .15s; }
@@ -235,7 +235,7 @@ h1,h2,h3,.site-name,.project-card a,.contact-panel a { overflow-wrap:anywhere; }
   .theme-picker fieldset { flex-wrap:wrap;justify-content:flex-end; }
   .theme-picker label { display:inline-flex;align-items:center;min-height:2.25rem;margin:0;white-space:nowrap; }
   .theme-picker input { width:1rem;height:1rem;margin:.1rem .25rem .1rem 0; }
-  .hero { padding-top:2rem; }
+  .hero { padding-top:0; }
   .signal-card { width:100%;max-width:36rem; }
   .project-card img,.project-card .project-visual { aspect-ratio:16/10;object-fit:cover; }
   .project-detail > img { max-height:30rem; }
@@ -263,7 +263,7 @@ h1,h2,h3,.site-name,.project-card a,.contact-panel a { overflow-wrap:anywhere; }
   .site-header nav a { width:auto;min-height:2.45rem;justify-content:center;padding:.55rem .78rem;border:1px solid var(--border);border-radius:999px;font-size:.65rem;text-align:center; }
   .site-header nav a[aria-current="page"] { color:var(--background);background:var(--text);border-color:var(--text); }
   .site-header nav a[aria-current="page"]::before { display:none; }
-  .hero { gap:2rem;padding:1.5rem 0 .5rem; }
+  .hero { gap:2rem;padding:0 0 .5rem; }
   .hero-actions { align-items:stretch;flex-direction:column;gap:.8rem;margin-top:1.5rem; }
   .hero-actions .button-link { width:100%;text-align:center; }
   .signal-card { padding:1.25rem; }
@@ -327,7 +327,7 @@ h2 { font-weight:500;letter-spacing:-.055em; }
 .eyebrow,.project-number,.signal-label,.timeline-date,.stack { color:var(--muted);font-weight:500;letter-spacing:.11em; }
 .page-hero { max-width:78rem;padding-top:0; }
 .page-hero > .eyebrow { margin:0 0 1rem;font:600 clamp(3rem,5vw,5.75rem)/.82 "Oxanium",Arial,sans-serif;letter-spacing:-.06em;text-transform:uppercase; }
-.page-about .page-hero h1,.page-experience .page-hero h1,.page-contact .page-hero h1 { font-family:"IBM Plex Sans",Arial,sans-serif;font-weight:500;letter-spacing:-.04em;word-spacing:.1em; }
+.page-home .hero h1,.page-about .page-hero h1,.page-experience .page-hero h1,.page-contact .page-hero h1 { font-family:"IBM Plex Sans",Arial,sans-serif;font-weight:500;letter-spacing:-.04em;word-spacing:.1em; }
 .page-hero .intro { max-width:54rem; }
 .button-link,button { color:var(--background);background:var(--text);border:1px solid var(--text);border-radius:999px;box-shadow:none;font-weight:700; }
 .button-link:hover,button:hover { color:var(--text);background:var(--background);box-shadow:none;transform:none; }
