@@ -313,12 +313,13 @@ h1,h2,h3,.site-name,.project-card a,.contact-panel a { overflow-wrap:anywhere; }
 
 /* Unified monochrome editorial system ------------------------------------- */
 body { position:relative;max-width:90rem;padding-inline:clamp(1rem,3vw,3rem);overflow-x:hidden;isolation:isolate;letter-spacing:-.012em; }
-.site-ambient { position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:var(--background); }
-.site-ambient-aurora { position:absolute;top:50%;left:50%;width:min(88vw,84rem);height:65vh;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--text) 20%,var(--background)) 0,color-mix(in srgb,var(--text) 7%,var(--background)) 42%,transparent 72%);filter:blur(4rem);opacity:.75;transform:translate(-50%,-50%);animation:intro-breathe 8s ease-in-out infinite alternate; }
-.site-ambient-grid { position:absolute;inset:0;background-image:linear-gradient(to right,color-mix(in srgb,var(--text) 4%,transparent) 1px,transparent 1px),linear-gradient(to bottom,color-mix(in srgb,var(--text) 4%,transparent) 1px,transparent 1px);background-size:3.75rem 3.75rem;mask-image:linear-gradient(to bottom,transparent,#000 18%,#000 82%,transparent);opacity:.6; }
-.site-ambient-giant { position:absolute;bottom:-6vh;left:50%;color:transparent;font-size:clamp(9rem,25vw,28rem);font-weight:800;line-height:.72;letter-spacing:-.08em;white-space:nowrap;background:linear-gradient(180deg,color-mix(in srgb,var(--text) 12%,transparent),transparent 65%);background-clip:text;-webkit-background-clip:text;-webkit-text-stroke:1px color-mix(in srgb,var(--text) 7%,transparent);transform:translateX(-50%);user-select:none; }
+.site-ambient { position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:linear-gradient(118deg,var(--background) 0 38%,color-mix(in srgb,var(--text) 2.5%,var(--background)) 100%); }
+.site-ambient::after { content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 72% 48%,transparent 0 23%,color-mix(in srgb,var(--background) 34%,transparent) 58%,var(--background) 100%); }
+.site-ambient-canvas { position:absolute;inset:0;width:100%;height:100%;opacity:.96; }
+.site-ambient-grain { position:absolute;inset:-55%;width:210%;height:210%;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");opacity:.028;mix-blend-mode:soft-light;animation:ambient-grain .24s steps(2) infinite; }
 main,.site-footer { position:relative;z-index:1; }
-.page-home > .site-ambient,.project-index-page .site-ambient { display:none; }
+.project-index-page .site-ambient { display:none; }
+@keyframes ambient-grain { 0% { transform:translate3d(-2%,-1%,0); } 25% { transform:translate3d(1%,2%,0); } 50% { transform:translate3d(2%,-2%,0); } 75% { transform:translate3d(-1%,1%,0); } 100% { transform:translate3d(2%,1%,0); } }
 .site-header { position:sticky;top:0;z-index:50;padding:1.15rem 0;background:color-mix(in srgb,var(--background) 84%,transparent);border-color:color-mix(in srgb,var(--border) 72%,transparent);backdrop-filter:blur(1.25rem); }
 .site-name { font-size:1rem;font-weight:700;letter-spacing:-.035em; }
 nav a { display:inline-flex;align-items:center;min-height:2.5rem;color:var(--muted);font:600 .9rem "IBM Plex Mono",monospace;letter-spacing:.025em;text-transform:uppercase; }
@@ -503,9 +504,9 @@ body.project-index-page { color:var(--text);background:var(--background); }
 }
 
 @media (max-width:42rem) {
-  .site-ambient-aurora { width:125vw;height:58vh;filter:blur(3rem); }
-  .site-ambient-grid { background-size:3rem 3rem;opacity:.48; }
-  .site-ambient-giant { bottom:4vh;font-size:clamp(8rem,42vw,13rem); }
+  .site-ambient { background:linear-gradient(150deg,var(--background) 0 28%,color-mix(in srgb,var(--text) 3%,var(--background)) 100%); }
+  .site-ambient::after { background:radial-gradient(ellipse at 76% 48%,transparent 0 18%,color-mix(in srgb,var(--background) 22%,transparent) 55%,var(--background) 100%); }
+  .site-ambient-canvas { opacity:.88; }
   .case-hero { grid-template-columns:1fr;min-height:0;padding:3.5rem 0 2rem; }
   .case-hero h1 { font-size:clamp(3rem,16vw,5rem); }
   .case-repo-link { width:100%; }
@@ -529,5 +530,5 @@ body.project-index-page { color:var(--text);background:var(--background); }
 }
 
 @media (prefers-reduced-motion:reduce) {
-  .site-ambient-aurora { animation:none; }
+  .site-ambient-grain { animation:none; }
 }
