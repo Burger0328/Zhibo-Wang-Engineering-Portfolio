@@ -5,6 +5,10 @@
     </head>
 
     <body class="page-{{ pageKey or 'default' }}{% if pageKey == 'home' %} intro-home{% endif %}{% if bodyClass %} {{ bodyClass }}{% endif %}">
+        <div class="site-ambient" aria-hidden="true">
+            <canvas class="site-ambient-canvas" data-ambient-canvas></canvas>
+            <span class="site-ambient-grain"></span>
+        </div>
         {% if pageKey == "home" %}
         <div class="site-intro" data-site-intro>
             <div class="intro-aurora" aria-hidden="true"></div>
@@ -52,6 +56,7 @@
 
         {% include "partials/footer.njk" %}
         <script type="module" src="/js/theme-picker.js"></script>
+        <script type="module" src="/js/ambient-background.js"></script>
         {% if pageKey == "home" %}<script type="module" src="/js/intro.js"></script>{% endif %}
         <script type="module" src="/js/page-transitions.js"></script>
         <script type="module" src="/js/reveal.js"></script>
