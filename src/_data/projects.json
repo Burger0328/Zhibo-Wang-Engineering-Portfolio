@@ -9,6 +9,40 @@
     "challenge": "Combine analog gas sensors, environmental sensing, camera input, storage, and a web interface in a compact physical prototype.",
     "process": "Implemented firmware for sampling and baseline comparison, camera-based presence detection, offline access-point fallback, microSD logging, and status feedback. Built the circuit and designed the 3D-printed enclosure.",
     "outcome": "Produced a self-contained prototype with live monitoring, local event capture, resilient storage, and documented hardware variants.",
+    "overview": "SniffKitty was designed as a private, local-first way to observe relative odor changes around a pet space. The final demo build combines two gas sensors, environmental sensing, camera-based motion detection, local storage, a browser dashboard, and a physical enclosure in one ESP32-S3 system. Six working hardware branches document the path from the first sensor prototype to the integrated system.",
+    "highlights": [
+      { "value": "6", "label": "working hardware variants" },
+      { "value": "30 s", "label": "startup baseline calibration" },
+      { "value": "Local", "label": "dashboard, logging, and event photos" }
+    ],
+    "architecture": [
+      { "step": "01", "title": "Sense", "text": "MQ135 and MQ137 readings are combined with temperature, humidity, and camera-frame changes." },
+      { "step": "02", "title": "Interpret", "text": "Firmware filters readings, compares them with a clean-air baseline, and manages event state." },
+      { "step": "03", "title": "Record", "text": "Timestamped measurements and event photos are written to microSD with automatic recovery." },
+      { "step": "04", "title": "Present", "text": "The ESP32 serves a live dashboard, camera stream, and status feedback without a cloud dependency." }
+    ],
+    "approach": [
+      { "title": "Relative sensing", "text": "The firmware reports changes from a startup baseline rather than claiming absolute ppm values. Temperature and humidity provide context for interpreting sensor drift." },
+      { "title": "Local presence detection", "text": "Camera-frame difference replaces cloud vision and, in later variants, the separate PIR sensor. New presence events can trigger locally stored images." },
+      { "title": "Resilient field behavior", "text": "The device retries failed storage operations, synchronizes timestamps, and falls back to its own Wi-Fi access point when the configured network is unavailable." }
+    ],
+    "responsibilities": [
+      "Implemented all embedded firmware and supporting Python utilities.",
+      "Built sensor acquisition, baseline calibration, filtering, and event-state logic.",
+      "Created camera presence detection, the embedded dashboard, networking, and microSD logging.",
+      "Wired and debugged the prototype and designed the ventilated 3D-printed enclosure."
+    ],
+    "verification": [
+      "Validated six self-contained hardware configurations across dedicated branches.",
+      "Recorded timestamped readings, environmental deltas, and presence state to CSV.",
+      "Tested station Wi-Fi and local access-point operation for disconnected demonstrations.",
+      "Verified event-photo capture, storage recovery, and live dashboard updates on the final build."
+    ],
+    "limitations": [
+      "Gas readings show relative change and are not calibrated safety, health, or veterinary measurements.",
+      "Camera sensitivity varies with lighting, placement, and threshold selection.",
+      "A production revision would replace breadboard wiring with a custom PCB and protected power inputs."
+    ],
     "repo": "https://github.com/Burger0328/SniffKitty--ODOR-SENSOR"
   },
   {
@@ -21,6 +55,40 @@
     "challenge": "Detect human presence from a low-resolution 8x8 thermal sensor while keeping inference private, fast, and small enough for a microcontroller.",
     "process": "Engineered 76 spatial and statistical features, evaluated with group-aware validation, quantized the model, and exported the exact preprocessing pipeline to firmware.",
     "outcome": "Delivered local inference plus an authenticated, real-time dashboard with database storage and WebSocket updates.",
+    "overview": "This project turns a 64-pixel thermal frame into a complete edge-AI product. The ESP32-S3 computes the same engineered features used during training, applies the exported scaler, and runs an INT8 neural network locally. Predictions and sensor frames travel through MQTT to a FastAPI service, where they are stored in MySQL and streamed to authenticated browsers in real time.",
+    "highlights": [
+      { "value": "89.04%", "label": "held-out group accuracy" },
+      { "value": "6.7 KB", "label": "fully quantized model" },
+      { "value": "3,513", "label": "held-out thermal readings" }
+    ],
+    "architecture": [
+      { "step": "01", "title": "Capture", "text": "The AMG8833 supplies 64 thermal pixels plus an ambient thermistor reading." },
+      { "step": "02", "title": "Engineer", "text": "Firmware derives 76 normalized spatial, statistical, gradient, and hot-region features." },
+      { "step": "03", "title": "Infer", "text": "A 32-16-1 INT8 network predicts presence locally with TensorFlow Lite Micro." },
+      { "step": "04", "title": "Connect", "text": "MQTT, FastAPI, MySQL, WebSockets, and Canvas power the live authenticated dashboard." }
+    ],
+    "approach": [
+      { "title": "Feature parity", "text": "Training and deployment share one 76-feature contract and the same StandardScaler values. Generated C++ headers carry the model and preprocessing parameters into firmware." },
+      { "title": "Group-aware evaluation", "text": "A held-out GroupKFold partition prevents readings from the same collection participant appearing in both training and evaluation." },
+      { "title": "End-to-end delivery", "text": "The system covers collection validation and backup, embedded inference, MQTT commands, persistence, authentication, WebSocket updates, and an 8x8 browser heatmap." }
+    ],
+    "responsibilities": [
+      "Developed thermal-frame normalization and spatial/statistical feature extraction.",
+      "Built data validation, retry, local backup, and class-balance tooling.",
+      "Implemented group-isolated training, scaling, INT8 export, and Python-to-C++ artifact generation.",
+      "Created ESP32 inference, MQTT messaging, FastAPI services, MySQL persistence, and the live dashboard."
+    ],
+    "verification": [
+      "Measured 89.04% accuracy on 3,513 readings held out by collection group.",
+      "Recorded 88.97% empty-room F1 and 89.12% person-present F1 across 101 groups.",
+      "Added tests for collection validation, TinyML artifacts, preprocessing parity, and API behavior.",
+      "GitHub Actions runs Python tests and a complete ESP32 firmware build."
+    ],
+    "limitations": [
+      "The source dataset is private because it contains participant identifiers.",
+      "A private authenticated MQTT broker is required for sensitive deployment.",
+      "Accuracy depends on sensor position, room geometry, and training-data coverage."
+    ],
     "repo": "https://github.com/Burger0328/Thermal-Presence-IoT-System"
   },
   {
@@ -33,6 +101,40 @@
     "challenge": "Maintain maximum energy extraction across changing source conditions while controlling a multi-leg converter and battery interface.",
     "process": "Characterized source behavior, tuned inner current and outer voltage loops, implemented perturb-and-observe tracking, and verified transient response.",
     "outcome": "Reached approximately 2,249 W from a 2,250 W theoretical solar maximum and demonstrated wind-system adaptation across multiple speeds.",
+    "overview": "The work spans two PSIM studies: a 600 V photovoltaic source charging a 100 V battery, and a variable-speed wind turbine coupled to a permanent-magnet generator. Both systems use three-leg interleaved buck-boost conversion and layered feedback control, then add perturb-and-observe tracking to follow the source's maximum-power operating point.",
+    "highlights": [
+      { "value": ">99.9%", "label": "simulated solar MPPT accuracy" },
+      { "value": "45.05 kW", "label": "wind MPP at 16 m/s" },
+      { "value": "0.049 s", "label": "12-to-8 m/s adaptation" }
+    ],
+    "architecture": [
+      { "step": "01", "title": "Characterize", "text": "Source curves establish target voltage or shaft-speed regions for each operating condition." },
+      { "step": "02", "title": "Regulate", "text": "Inner current loops and outer voltage or speed loops stabilize converter behavior." },
+      { "step": "03", "title": "Track", "text": "Perturb-and-observe logic adjusts the reference using measured power response." },
+      { "step": "04", "title": "Convert", "text": "Three 120-degree interleaved buck-boost legs transfer energy to the 100 V battery." }
+    ],
+    "approach": [
+      { "title": "Solar conversion", "text": "An outer PV-voltage controller generates the reference for three current-controlled legs. The system converges near 449 V and 5 A, approximately 1.3 W below the theoretical maximum." },
+      { "title": "Wind conversion", "text": "Turbine power-speed curves define optimum shaft speeds. A PI speed loop drives converter current while a C-block MPPT controller updates the reference." },
+      { "title": "Interleaved control", "text": "Three converter phases use 120-degree-shifted 10 kHz PWM and 400 uH inductors to share current and reduce aggregate ripple." }
+    ],
+    "responsibilities": [
+      "Built and validated the solar converter current-control and PV-voltage loops.",
+      "Integrated the three phase-shifted converter legs.",
+      "Characterized generator behavior and turbine power curves.",
+      "Designed the wind-system MPPT algorithm and analyzed both systems' simulation results."
+    ],
+    "verification": [
+      "Solar output reached 2,248.7-2,249.9 W against a 2,250 W theoretical maximum.",
+      "Wind maximum-power points measured 5.63, 19.00, and 45.05 kW at 8, 12, and 16 m/s.",
+      "The wind system reached its initial 12 m/s operating region in 0.073 seconds.",
+      "A 12 m/s to 8 m/s transition settled in approximately 0.049 seconds."
+    ],
+    "limitations": [
+      "Reported values are simulation results rather than physical converter measurements.",
+      "Solver, sampling, and switching settings can create small numerical differences.",
+      "Hardware deployment would require component-loss, protection, sensing, and gate-drive design."
+    ],
     "repo": "https://github.com/Burger0328/Renewable-Energy-MPPT-Control-Systems"
   },
   {
@@ -45,6 +147,40 @@
     "challenge": "Implement add-compare-select path metrics and survivor traceback as deterministic, synthesizable hardware.",
     "process": "Built a reference model, parameterized the RTL, generated reproducible channel errors, and verified decoded output after pipeline latency.",
     "outcome": "Completed synthesis and fitting for Cyclone V with portable model tests and structured experiment documentation.",
+    "overview": "This project implements the complete digital link around a rate-1/2, constraint-length-4 convolutional code. The transmitter generates two coded bits for every input bit; the receiver scores legal trellis transitions, updates eight path metrics, stores survivor decisions, and traces back through 64 symbols to recover the most likely data stream.",
+    "highlights": [
+      { "value": "8", "label": "decoder trellis states" },
+      { "value": "64", "label": "symbol traceback depth" },
+      { "value": "559", "label": "Cyclone V ALMs after fitting" }
+    ],
+    "architecture": [
+      { "step": "01", "title": "Encode", "text": "A constraint-length-4 convolutional encoder emits a rate-1/2 coded stream." },
+      { "step": "02", "title": "Disturb", "text": "Deterministic, seeded-random, fixed, and burst errors model channel corruption." },
+      { "step": "03", "title": "Score", "text": "Hamming branch metrics feed add-compare-select updates for all eight states." },
+      { "step": "04", "title": "Recover", "text": "Stored survivor choices drive 64-symbol traceback and delayed output comparison." }
+    ],
+    "approach": [
+      { "title": "Reference before RTL", "text": "An executable Python model provides a portable behavioral reference for the encoder, trellis, path metrics, and error cases before hardware simulation." },
+      { "title": "Parameterized decoder", "text": "The SystemVerilog design consolidates branch metrics, ACS updates, survivor memory, and traceback into a synthesizable decoder." },
+      { "title": "Reproducible channel study", "text": "Experiments cover evenly spaced, seeded-random, and consecutive burst errors on either or both channel bits." }
+    ],
+    "responsibilities": [
+      "Implemented the encoder and Viterbi decoder datapaths in SystemVerilog.",
+      "Integrated the error channel and latency-aware comparison path.",
+      "Created the error experiments, self-checking testbench, and Python reference model.",
+      "Ran Quartus synthesis and fitting and analyzed fixed, random, and burst-error behavior."
+    ],
+    "verification": [
+      "The RTL testbench generates 512 deterministic pseudo-random source bits.",
+      "Decoded output is checked automatically after the configured traceback latency.",
+      "Portable Python unit tests exercise the model independently of commercial FPGA tools.",
+      "Cyclone V synthesis and fitting completed with 559 ALMs and 579 registers."
+    ],
+    "limitations": [
+      "The decoder uses hard-decision Hamming metrics rather than soft-decision confidence values.",
+      "The 64-symbol traceback introduces deterministic decoding latency.",
+      "Archived timing constraints require further optimization; timing closure is not claimed."
+    ],
     "repo": "https://github.com/Burger0328/FPGA-Viterbi-Decoder"
   },
   {
@@ -57,6 +193,40 @@
     "challenge": "Explain why source-level complexity and thread count often fail to predict real execution time.",
     "process": "Connected wall-clock measurements to instruction count, CPI, cache behavior, branch prediction, false sharing, and Amdahl's Law.",
     "outcome": "Created a privacy-safe, tested engineering report with standalone demonstrations and machine-readable measurements.",
+    "overview": "Five processor experiments were consolidated into a focused study of where execution time actually goes. Instead of treating optimization as a single compiler switch, the project connects source structure to generated instructions, pipeline behavior, cache and TLB locality, coherence traffic, synchronization, and the limits of parallel scaling.",
+    "highlights": [
+      { "value": "13.77x", "label": "row-major locality speedup" },
+      { "value": "3.42x", "label": "compiler optimization speedup" },
+      { "value": "~149x", "label": "shared histogram slowdown" }
+    ],
+    "architecture": [
+      { "step": "01", "title": "Measure", "text": "Collect wall time and hardware-counter evidence under controlled benchmark variants." },
+      { "step": "02", "title": "Locate", "text": "Separate instruction-count, CPI, cache, branch, TLB, and synchronization effects." },
+      { "step": "03", "title": "Change", "text": "Modify optimization level, data layout, traversal order, affinity, or sharing strategy." },
+      { "step": "04", "title": "Explain", "text": "Relate the observed ratio to the CPU performance equation and Amdahl's Law." }
+    ],
+    "approach": [
+      { "title": "From code to cycles", "text": "Compiler and x86 studies connect code changes to instruction count, CPI, branch behavior, instruction-level parallelism, and critical-path limits." },
+      { "title": "Memory hierarchy", "text": "Traversal, stride, padding, working-set, and loop-order experiments reveal when cache, TLB, and prefetching dominate nominal complexity." },
+      { "title": "Parallelism under pressure", "text": "False sharing, affinity, locks, shared histograms, and private reductions show when coherence and contention exceed useful work." }
+    ],
+    "responsibilities": [
+      "Ran the processor, memory, and multithreading experiments.",
+      "Interpreted performance counters and performed CPI, latency, and speedup calculations.",
+      "Compared compiler, locality, data-layout, and synchronization strategies.",
+      "Produced privacy-safe reports, standalone C++ demonstrations, and machine-readable results."
+    ],
+    "verification": [
+      "Compiler optimization produced a measured 3.42x speedup.",
+      "Row-major traversal was 13.77x faster than column-major traversal.",
+      "Cache-aware loop ordering increased observed hit rate from 14.24% to 93.73%.",
+      "Measured hierarchy latency was approximately 5, 14, 26, and 100 cycles for L1, L2, L3, and memory."
+    ],
+    "limitations": [
+      "Measurements come from the original course system and are hardware-specific.",
+      "Standalone programs demonstrate the mechanisms but do not reproduce every original result.",
+      "Repeated-run ratios are more meaningful than treating one absolute time as universal."
+    ],
     "repo": "https://github.com/Burger0328/CPU-Performance-Engineering-Lab"
   },
   {
@@ -69,6 +239,40 @@
     "challenge": "Turn six course experiments into a reusable package without carrying over assignment scaffolding or private material.",
     "process": "Refactored algorithms into modules, corrected the Fourier round-trip result, added validation and deterministic controls, and built tests.",
     "outcome": "Published an installable toolkit with a visual demo and successful local and GitHub CI verification.",
+    "overview": "The toolkit reorganizes six image-processing experiments into an installable Python package that exposes the underlying numerical ideas. Core operations are implemented with NumPy rather than hidden behind single-call library equivalents, keeping transformations, filtering, reconstruction, compression, morphology, edge detection, and clustering readable and testable.",
+    "highlights": [
+      { "value": "6", "label": "cohesive algorithm modules" },
+      { "value": "2-D", "label": "direct DFT reference implementation" },
+      { "value": "CI", "label": "automated numerical verification" }
+    ],
+    "architecture": [
+      { "step": "01", "title": "Transform", "text": "Centered rotation and inverse mapping support nearest-neighbor and bilinear sampling." },
+      { "step": "02", "title": "Enhance", "text": "Histogram, Laplacian, Sobel, Fourier, and restoration operations reveal image structure." },
+      { "step": "03", "title": "Represent", "text": "DCT and multilevel wavelets explore the quality-cost tradeoff of coefficient removal." },
+      { "step": "04", "title": "Understand", "text": "Morphology, edge suppression, components, and k-means turn pixels into regions." }
+    ],
+    "approach": [
+      { "title": "Readable fundamentals", "text": "Direct DFT/IDFT and conditional-dilation connected components remain as clear reference implementations so the math and iteration stay visible." },
+      { "title": "Reproducible experiments", "text": "Randomized k-means accepts a seed, demo generation is standalone, and validation covers shape, ranges, parameters, and edge cases." },
+      { "title": "Portfolio refactor", "text": "Notebook logic was consolidated, the Fourier round-trip output was corrected, and public APIs were grouped into reusable modules." }
+    ],
+    "responsibilities": [
+      "Implemented algorithms across all six original experiments.",
+      "Conducted, visualized, and interpreted the numerical studies.",
+      "Reorganized notebook implementations into a reusable Python package.",
+      "Added validation, deterministic controls, automated tests, and a standalone demo."
+    ],
+    "verification": [
+      "Tests cover geometric transforms and numerical DFT/IDFT reconstruction.",
+      "Compression tests validate DCT and wavelet behavior under coefficient removal.",
+      "Vision tests exercise components, edge processing, and seeded segmentation.",
+      "The demo reproduces filtering, restoration, compression, morphology, and segmentation outputs."
+    ],
+    "limitations": [
+      "Direct DFT and iterative references favor clarity over production-scale performance.",
+      "Thresholds and filter parameters remain image- and noise-dependent.",
+      "The toolkit is educational and does not replace optimized production libraries."
+    ],
     "repo": "https://github.com/Burger0328/Digital-Image-Processing-Toolkit"
   },
   {
@@ -81,6 +285,40 @@
     "challenge": "Connect transistor sizing and logical effort to verified timing, power, and physical-layout results.",
     "process": "Designed gates and transmission-gate storage elements, constructed testbenches, swept timing constraints, and completed physical checks.",
     "outcome": "Documented a progression from static CMOS cells to a registered consecutive-ones detector with verification evidence.",
+    "overview": "Three studies build from transistor-level static CMOS gates to sequential storage and a synchronous datapath. Each stage pairs schematic design with testbench construction and measurement: first logical-effort sizing and layout verification, then latch and flip-flop timing, and finally a registered consecutive-ones detector evaluated for function, period, and power.",
+    "highlights": [
+      { "value": "DRC/LVS", "label": "physical verification completed" },
+      { "value": "49.31 ps", "label": "minimum passing Lab 2 period" },
+      { "value": "398.689 uW", "label": "reported detector power" }
+    ],
+    "architecture": [
+      { "step": "01", "title": "Design", "text": "Transistor networks implement static logic, transmission-gate storage, and the detector datapath." },
+      { "step": "02", "title": "Size", "text": "Logical effort and load targets guide stage count and device sizing." },
+      { "step": "03", "title": "Simulate", "text": "HSPICE testbenches measure propagation, setup, hold, clock-to-Q, period, and power." },
+      { "step": "04", "title": "Verify", "text": "Cadence layout, DRC, LVS, waveforms, and vector sweeps connect intent to evidence." }
+    ],
+    "approach": [
+      { "title": "Static CMOS", "text": "NAND, NOR, inverter, and buffer-chain designs establish sizing, logical effort, transition slope, average power, and physical verification." },
+      { "title": "Sequential timing", "text": "Transmission-gate latches and master-slave flip-flops are characterized for setup, hold, clock-to-Q, path delay, and minimum period." },
+      { "title": "Integrated detector", "text": "A four-input adjacent-ones detector is wrapped with registers for functional vectors, clock-period sweeps, and power analysis." }
+    ],
+    "responsibilities": [
+      "Designed the transistor-level logic, latch, flip-flop, and detector circuits.",
+      "Sized devices and stages using logical-effort reasoning.",
+      "Constructed testbenches and measured timing, power, and transitions.",
+      "Created physical layouts, ran DRC/LVS, and analyzed the critical path."
+    ],
+    "verification": [
+      "Lab 1 completed design-rule and layout-versus-schematic checks.",
+      "Lab 2 measured 12.598 ps setup, -22.598 ps hold, and 20.254 ps maximum clock-to-Q.",
+      "The tested sequential path passed at a 49.31 ps minimum simulated period.",
+      "The detector reported a 68.8 ps period and 398.689 uW total simulated power."
+    ],
+    "limitations": [
+      "Results are simulations from a licensed academic process environment, not fabricated silicon.",
+      "The original process-design kit and waveform databases cannot be redistributed.",
+      "Cleaned netlists require compatible device-model definitions to run."
+    ],
     "repo": "https://github.com/Burger0328/CMOS-VLSI-Design-and-Verification"
   },
   {
@@ -93,6 +331,40 @@
     "challenge": "Coordinate state, canvas interaction, persistent questions, rewards, and reliable navigation across a multi-stage game.",
     "process": "Continued the team project with preserved attribution, structured the application around models, controllers, and views, and expanded tests.",
     "outcome": "Delivered a playable learning experience with per-act accuracy, retry flows, database-backed content, and CI.",
+    "overview": "House of Odds turns probability practice into a three-act casino journey. Questions, rewards, navigation, and the final performance report are coordinated across an MVC-inspired TypeScript architecture and rendered through Konva. This repository preserves the original team history while documenting and testing my final-results feature and integration work.",
+    "highlights": [
+      { "value": "3", "label": "distinct learning acts" },
+      { "value": "38", "label": "passing automated tests" },
+      { "value": "8", "label": "test files across the app" }
+    ],
+    "architecture": [
+      { "step": "01", "title": "Persist", "text": "Prisma and SQLite provide the question data used by each act." },
+      { "step": "02", "title": "Model", "text": "Question, reward, act, and result models hold gameplay state and statistics." },
+      { "step": "03", "title": "Coordinate", "text": "Controllers and AppScreenSwitcher manage input, validation, rewards, and screen flow." },
+      { "step": "04", "title": "Render", "text": "Konva views draw the title, questions, rewards, and final results on a 1280 x 720 stage." }
+    ],
+    "approach": [
+      { "title": "Results as a feature", "text": "The final-results model calculates correct and incorrect totals, overall accuracy, and a per-act breakdown, then resets the run cleanly." },
+      { "title": "Screen-flow integration", "text": "AppScreenSwitcher connects the title, three question acts, reward screens, and end state while controllers separate state changes from rendering." },
+      { "title": "Acceptance-led testing", "text": "Tests follow user-facing requirements: navigation reaches the intended screen, answers and rewards update correctly, and restarting begins cleanly." }
+    ],
+    "responsibilities": [
+      "Implemented the end-of-game model, controller, and Konva view.",
+      "Calculated overall and per-act correct, incorrect, and accuracy values.",
+      "Integrated the results screen and complete restart behavior.",
+      "Added regression tests and resolved merge, initialization, and CI issues."
+    ],
+    "verification": [
+      "The repository contains 38 passing tests across eight files.",
+      "Tests cover state, controllers, title/results screens, navigation, and the database adapter.",
+      "Strict TypeScript checking and a Vite production build run with the test suite.",
+      "Manual testing exercised the final-question-to-results-to-restart flow."
+    ],
+    "limitations": [
+      "The game targets a fixed 1280 x 720 canvas and is not yet responsive.",
+      "Question content currently uses a development SQLite database.",
+      "The automated suite is useful regression coverage but not full end-to-end testing."
+    ],
     "repo": "https://github.com/Burger0328/House-of-Odds"
   }
 ]

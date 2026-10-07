@@ -11,41 +11,111 @@ eleventyComputed:
   title: "{{ project.title }}"
   description: "{{ project.summary }}"
 ---
-<article class="project-detail">
-    <p class="eyebrow">Project {{ project.number }}</p>
-    <h1>{{ project.title }}</h1>
-    <p class="intro">{{ project.summary }}</p>
-
-    {% if project.image %}<img src="{{ project.image }}" alt="{{ project.alt }}" width="1536" height="1024">{% else %}<div class="project-visual project-visual-large" aria-hidden="true"><span>{{ project.number }}</span></div>{% endif %}
-
-    <dl class="project-meta">
+<article class="project-detail case-study">
+    <header class="case-hero">
         <div>
-            <dt>Role</dt>
-            <dd>{{ project.role }}</dd>
+            <p class="eyebrow">Project {{ project.number }} · Engineering case study</p>
+            <h1>{{ project.title }}</h1>
+            <p class="intro">{{ project.summary }}</p>
+        </div>
+        <a class="case-repo-link" href="{{ project.repo }}" aria-label="View {{ project.title }} repository on GitHub">
+            <span>Source repository</span>
+            <strong>GitHub ↗</strong>
+        </a>
+    </header>
+
+    <ul class="case-highlights" aria-label="Project highlights">
+        {% for highlight in project.highlights %}
+        <li><strong>{{ highlight.value }}</strong><span>{{ highlight.label }}</span></li>
+        {% endfor %}
+    </ul>
+
+    <div class="case-brief-grid">
+        <section class="case-overview">
+            <p class="case-kicker">Overview</p>
+            <h2>From problem to working system.</h2>
+            <p>{{ project.overview }}</p>
+        </section>
+        <dl class="project-meta">
+            <div><dt>Role</dt><dd>{{ project.role }}</dd></div>
+            <div><dt>Focus</dt><dd>{{ project.focus }}</dd></div>
+            <div><dt>Technology</dt><dd>{{ project.stack }}</dd></div>
+            <div><dt>Headline result</dt><dd>{{ project.metric }}</dd></div>
+        </dl>
+    </div>
+
+    <figure class="case-visual">
+        {% if project.image %}<img src="{{ project.image }}" alt="{{ project.alt }}" width="1536" height="1024">{% else %}<div class="project-visual project-visual-large" aria-hidden="true"><span>{{ project.number }}</span></div>{% endif %}
+        <figcaption>{{ project.title }} · selected project evidence</figcaption>
+    </figure>
+
+    <section class="case-problem">
+        <div>
+            <p class="case-kicker">The challenge</p>
+            <h2>{{ project.challenge }}</h2>
         </div>
         <div>
-            <dt>Focus</dt>
-            <dd>{{ project.focus }}</dd>
+            <p>{{ project.process }}</p>
+            <p class="case-outcome"><span>Outcome</span>{{ project.outcome }}</p>
         </div>
-        <div><dt>Stack</dt><dd>{{ project.stack }}</dd></div>
-        <div><dt>Result</dt><dd>{{ project.metric }}</dd></div>
-    </dl>
-
-    <section>
-        <h2>Challenge</h2>
-        <p>{{ project.challenge }}</p>
     </section>
 
-    <section>
-        <h2>Process</h2>
-        <p>{{ project.process }}</p>
+    <section class="case-section">
+        <div class="case-section-heading">
+            <p class="case-kicker">System flow</p>
+            <h2>How the solution works</h2>
+        </div>
+        <ol class="case-flow">
+            {% for item in project.architecture %}
+            <li><span>{{ item.step }}</span><h3>{{ item.title }}</h3><p>{{ item.text }}</p></li>
+            {% endfor %}
+        </ol>
     </section>
 
-    <section>
-        <h2>Outcome</h2>
-        <p>{{ project.outcome }}</p>
+    <section class="case-section">
+        <div class="case-section-heading">
+            <p class="case-kicker">Technical approach</p>
+            <h2>Decisions behind the implementation</h2>
+        </div>
+        <div class="case-approach-grid">
+            {% for item in project.approach %}
+            <article><span>0{{ loop.index }}</span><h3>{{ item.title }}</h3><p>{{ item.text }}</p></article>
+            {% endfor %}
+        </div>
     </section>
 
-    <p><a class="button-link" href="{{ project.repo }}">View repository on GitHub</a></p>
-    <p><a href="/projects/">Return to all projects</a></p>
+    <section class="case-evidence-grid">
+        <div>
+            <p class="case-kicker">My contribution</p>
+            <h2>What I owned</h2>
+            <ul class="case-checklist">
+                {% for item in project.responsibilities %}<li>{{ item }}</li>{% endfor %}
+            </ul>
+        </div>
+        <div>
+            <p class="case-kicker">Evidence</p>
+            <h2>How it was verified</h2>
+            <ul class="case-checklist">
+                {% for item in project.verification %}<li>{{ item }}</li>{% endfor %}
+            </ul>
+        </div>
+    </section>
+
+    <section class="case-limitations">
+        <div>
+            <p class="case-kicker">Engineering judgment</p>
+            <h2>Limits and next steps</h2>
+        </div>
+        <ul>
+            {% for item in project.limitations %}<li>{{ item }}</li>{% endfor %}
+        </ul>
+    </section>
+
+    <footer class="case-footer">
+        <div><p class="case-kicker">Explore the implementation</p><h2>Code, documentation, and project evidence.</h2></div>
+        <div class="case-footer-actions">
+            <a class="button-link" href="{{ project.repo }}">View repository on GitHub ↗</a>
+            <a href="/projects/">Return to all projects</a>
+        </div>
+    </footer>
 </article>
