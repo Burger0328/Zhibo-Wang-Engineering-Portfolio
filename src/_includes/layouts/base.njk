@@ -4,23 +4,41 @@
         {% include "partials/head.njk" %}
     </head>
 
-    <body{% if pageKey == "home" %} class="intro-home"{% endif %}>
+    <body class="page-{{ pageKey or 'default' }}{% if pageKey == 'home' %} intro-home{% endif %}{% if bodyClass %} {{ bodyClass }}{% endif %}">
         {% if pageKey == "home" %}
         <div class="site-intro" data-site-intro>
-            <img src="/images/og.png" alt="" width="1732" height="908">
-            <div class="intro-shade"></div>
-            <div class="intro-effects" aria-hidden="true">
-                <span class="device-glow glow-grid"></span>
-                <span class="device-glow glow-board"></span>
-                <span class="device-glow glow-wave"></span>
-                <span class="device-glow glow-case"></span>
-                <span class="signal-pulse pulse-one"></span>
-                <span class="signal-pulse pulse-two"></span>
-                <span class="signal-pulse pulse-three"></span>
+            <div class="intro-aurora" aria-hidden="true"></div>
+            <div class="intro-grid" aria-hidden="true"></div>
+            <div class="intro-giant" aria-hidden="true">ZHIBO</div>
+
+            <div class="intro-marquee" aria-hidden="true">
+                <div class="intro-marquee-track">
+                    {% for copy in [1, 2] %}
+                    <span>Embedded Systems</span><i>✦</i>
+                    <span>Digital Hardware</span><i>✦</i>
+                    <span>TinyML</span><i>✦</i>
+                    <span>FPGA + VLSI</span><i>✦</i>
+                    <span>Performance Engineering</span><i>✦</i>
+                    {% endfor %}
+                </div>
             </div>
+
             <div class="intro-copy">
-                <p class="intro-kicker">Hardware · Software · Systems</p>
-                <a class="intro-enter" href="#main-content" data-enter-portfolio>Enter Portfolio <span aria-hidden="true">↘</span></a>
+                <p class="intro-kicker">Computer Engineering · La Jolla, California</p>
+                <p class="intro-display">Where hardware<br>meets software.</p>
+                <div class="intro-actions">
+                    <a class="intro-enter intro-magnetic" href="#main-content" data-enter-portfolio>
+                        Enter portfolio <span aria-hidden="true">↘</span>
+                    </a>
+                    <a class="intro-secondary intro-magnetic" href="/projects/" data-enter-portfolio>
+                        View projects <span aria-hidden="true">↗</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="intro-meta" aria-hidden="true">
+                <span>Portfolio / 2026</span>
+                <span>Design · Build · Verify</span>
             </div>
         </div>
         <noscript><style>.site-intro{display:none}</style></noscript>

@@ -4,15 +4,90 @@ title: Projects
 description: Embedded systems, FPGA, TinyML, VLSI, power electronics, performance engineering, and software projects by Zhibo Wang.
 pageKey: projects
 permalink: /projects/index.html
+pageScript: /js/works-wheel.js
+bodyClass: project-index-page
 ---
-<section class="page-hero"><p class="eyebrow">Selected engineering work</p><h1>Projects</h1><p class="intro">Each project is documented around the problem, my contribution, the engineering process, and the result.</p></section>
-<ol class="project-grid">
-{% for project in projects %}
-    <li><article class="project-card">
-        {% if project.image %}<img src="{{ project.image }}" alt="{{ project.alt }}" width="1200" height="800">{% else %}<div class="project-visual" aria-hidden="true"><span>{{ project.number }}</span></div>{% endif %}
-        <p class="project-number">{{ project.number }}</p><h2>{{ project.title }}</h2>
-        <p>{{ project.summary }}</p><p class="metric">{{ project.metric }}</p><p class="stack">{{ project.stack }}</p>
-        <a href="/projects/{{ project.slug }}/">Read case study</a>
-    </article></li>
-{% endfor %}
-</ol>
+<section class="works-wheel" data-works-wheel aria-labelledby="works-wheel-heading">
+    <h2 id="works-wheel-heading" class="visually-hidden">Project explorer</h2>
+
+    <div
+        class="works-wheel-stage"
+        data-works-wheel-stage
+        tabindex="0"
+        role="group"
+        aria-describedby="works-wheel-instructions"
+        aria-label="Interactive project wheel"
+    >
+        <div class="works-wheel-page-title">
+            <span>Portfolio index / 2026</span>
+            <h1>Projects</h1>
+        </div>
+
+        <div class="works-wheel-drum" data-works-wheel-drum>
+            {% for project in projects %}
+            <a
+                class="works-wheel-card"
+                data-works-wheel-card
+                data-title="{{ project.title }}"
+                data-number="{{ project.number }}"
+                data-metric="{{ project.metric }}"
+                href="/projects/{{ project.slug }}/"
+                aria-label="{{ project.title }} — read case study"
+            >
+                <span class="works-wheel-face{% if not project.image %} works-wheel-placeholder works-wheel-placeholder-{{ loop.index }}{% endif %}" data-works-wheel-face>
+                    {% if project.image %}
+                    <img src="{{ project.image }}" alt="" width="1200" height="800" draggable="false">
+                    {% else %}
+                    <span class="works-wheel-cover-number" aria-hidden="true">{{ project.number }}</span>
+                    <span class="works-wheel-cover-focus" aria-hidden="true">{{ project.focus }}</span>
+                    {% endif %}
+                    <span class="works-wheel-card-action" aria-hidden="true">Open <span>↗</span></span>
+                </span>
+            </a>
+            {% endfor %}
+        </div>
+
+        <div class="works-wheel-label" data-works-wheel-label aria-hidden="true">
+            <span>Selected</span>
+            <strong>Works '26</strong>
+        </div>
+
+        <div class="works-wheel-current" data-works-wheel-current aria-live="polite">
+            <span class="works-wheel-current-number" data-works-wheel-number>{{ projects[0].number }}</span>
+            <strong data-works-wheel-title>{{ projects[0].title }}</strong>
+            <span class="works-wheel-current-metric" data-works-wheel-metric>{{ projects[0].metric }}</span>
+        </div>
+
+        <ol class="works-wheel-index" aria-label="Choose a project">
+            {% for project in projects %}
+            <li>
+                <button type="button" data-works-wheel-index="{{ loop.index0 }}">
+                    <span>{{ project.number }}</span>{{ project.title }}
+                </button>
+            </li>
+            {% endfor %}
+        </ol>
+
+        <div class="works-wheel-cue" aria-hidden="true">
+            <span>Scroll to explore</span>
+            <i></i>
+        </div>
+
+        <p class="works-wheel-instructions" id="works-wheel-instructions">
+            Scroll, drag vertically, or use the arrow keys to turn the wheel. Select a card to read the case study.
+        </p>
+    </div>
+
+    <noscript>
+        <ol class="project-grid works-wheel-noscript">
+        {% for project in projects %}
+            <li><article class="project-card">
+                {% if project.image %}<img src="{{ project.image }}" alt="{{ project.alt }}" width="1200" height="800">{% else %}<div class="project-visual" aria-hidden="true"><span>{{ project.number }}</span></div>{% endif %}
+                <p class="project-number">{{ project.number }}</p><h2>{{ project.title }}</h2>
+                <p>{{ project.summary }}</p><p class="metric">{{ project.metric }}</p><p class="stack">{{ project.stack }}</p>
+                <a href="/projects/{{ project.slug }}/">Read case study</a>
+            </article></li>
+        {% endfor %}
+        </ol>
+    </noscript>
+</section>
