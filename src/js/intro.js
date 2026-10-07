@@ -5,7 +5,9 @@ const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matc
 if (intro && enterButtons.length && !document.documentElement.classList.contains("portfolio-entered")) {
     const enterPortfolio = (event) => {
         event.preventDefault();
-        intro.classList.add("is-leaving");
+
+        const destination = new URL(event.currentTarget.href, window.location.href);
+        const staysOnHome = destination.pathname === window.location.pathname && destination.hash;
 
         try {
             sessionStorage.setItem("portfolio-entered", "true");
@@ -13,13 +15,18 @@ if (intro && enterButtons.length && !document.documentElement.classList.contains
             console.warn("The intro state could not be saved.", error);
         }
 
-        const destination = new URL(event.currentTarget.href, window.location.href);
-        const staysOnHome = destination.pathname === window.location.pathname && destination.hash;
+        // Destination links should navigate immediately. Hiding the intro first
+        // briefly exposed the Home page before the Projects page loaded.
+        if (!staysOnHome) {
+            window.location.assign(destination.href);
+            return;
+        }
+
+        intro.classList.add("is-leaving");
 
         window.setTimeout(() => {
             document.documentElement.classList.add("portfolio-entered");
-            if (staysOnHome) document.querySelector("#main-content")?.focus({ preventScroll: true });
-            else window.location.assign(destination.href);
+            document.querySelector("#main-content")?.focus({ preventScroll: true });
         }, reducedMotion ? 0 : 850);
     };
 
