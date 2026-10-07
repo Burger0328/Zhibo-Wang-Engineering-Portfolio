@@ -425,7 +425,8 @@ body.project-index-page { color:var(--text);background:var(--background); }
 /* Project case studies ----------------------------------------------------- */
 .case-study { max-width:82rem; }
 .case-study h2 { max-width:22ch; }
-.case-hero { display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(2rem,7vw,7rem);align-items:end;min-height:clamp(30rem,66vh,48rem);padding:clamp(5rem,11vw,10rem) 0 3rem;border-bottom:1px solid var(--border); }
+.case-hero { display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(2rem,7vw,7rem);align-items:end;min-height:clamp(20rem,50vh,36rem);padding:clamp(2.5rem,6vw,5rem) 0 3rem;border-bottom:1px solid var(--border); }
+.case-hero .eyebrow { font-size:clamp(1.02rem,1.3vw,1.2rem);line-height:1.4;letter-spacing:.065em; }
 .case-hero h1 { max-width:14ch;margin:.35rem 0 1.5rem;font-size:clamp(3.35rem,8vw,7.8rem);line-height:.92; }
 .case-hero .intro { max-width:58ch;margin:0; }
 .case-repo-link { display:flex;min-width:11rem;flex-direction:column;gap:.35rem;padding:1rem 0;border-top:1px solid var(--text);color:var(--text);text-decoration:none; }
