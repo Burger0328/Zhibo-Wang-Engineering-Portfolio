@@ -386,3 +386,38 @@ body.project-index-page { width:100%;max-width:none;height:100svh;padding:0;over
   .project-index-page .works-wheel-instructions { display:none; }
   .project-index-page .works-wheel-cue { right:1rem;bottom:1.25rem; }
 }
+
+/* Keep the immersive project index fully synchronized with the selected
+   light, dark, or system theme. */
+body.project-index-page { color:var(--text);background:var(--background); }
+.project-index-page .site-header { color:var(--text);border-color:color-mix(in srgb,var(--text) 16%,transparent); }
+.project-index-page .site-name,.project-index-page nav a { color:var(--muted); }
+.project-index-page .site-name:hover,.project-index-page nav a:hover,.project-index-page nav a[aria-current="page"] { color:var(--text); }
+.project-index-page .theme-picker label { color:var(--muted); }
+.project-index-page .theme-picker input { accent-color:var(--text); }
+.project-index-page .works-wheel-stage { color:var(--text);background:var(--background); }
+.project-index-page .works-wheel-stage::before { background:radial-gradient(circle at 50% 48%,color-mix(in srgb,var(--text) 10%,transparent) 0,transparent 48%); }
+.project-index-page .works-wheel-stage::after { background:linear-gradient(90deg,transparent,var(--border),transparent); }
+.project-index-page .works-wheel-stage:focus-visible { outline-color:var(--text); }
+.project-index-page .works-wheel-face { border-color:var(--border);background:var(--surface);box-shadow:0 1.75rem 4rem -1.35rem rgb(0 0 0 / 34%); }
+.project-index-page .works-wheel-card:hover .works-wheel-face,.project-index-page .works-wheel-card:focus-visible .works-wheel-face { border-color:var(--text);box-shadow:0 2rem 4.5rem -1.2rem rgb(0 0 0 / 42%),0 0 0 1px var(--text); }
+.project-index-page .works-wheel-placeholder,.project-index-page .works-wheel-placeholder-2,.project-index-page .works-wheel-placeholder-4,.project-index-page .works-wheel-placeholder-5 { color:var(--text);background:linear-gradient(145deg,var(--surface-2),var(--surface) 72%); }
+.project-index-page .works-wheel-placeholder::before { background:linear-gradient(115deg,transparent 0 62%,color-mix(in srgb,var(--text) 10%,transparent) 62.2% 62.7%,transparent 63%); }
+.project-index-page .works-wheel-cover-number { color:var(--text); }
+.project-index-page .works-wheel-cover-focus { color:var(--muted); }
+.project-index-page .works-wheel-card-action { color:var(--background);background:color-mix(in srgb,var(--text) 94%,transparent); }
+.project-index-page .works-wheel-label span,.project-index-page .works-wheel-current-number,.project-index-page .works-wheel-current-metric { color:var(--muted); }
+.project-index-page .works-wheel-page-title span,.project-index-page .works-wheel-instructions { color:var(--muted); }
+.project-index-page .works-wheel-page-title h1 { color:var(--text); }
+.project-index-page .works-wheel-index button { color:color-mix(in srgb,var(--text) 48%,transparent); }
+.project-index-page .works-wheel-index button span { color:color-mix(in srgb,var(--text) 34%,transparent); }
+.project-index-page .works-wheel-index button:hover,.project-index-page .works-wheel-index button.is-active { color:var(--text); }
+.project-index-page .works-wheel-index button.is-active span { color:var(--muted); }
+.project-index-page .works-wheel-index button.is-active::before { background:var(--text); }
+.project-index-page .works-wheel-cue { color:var(--muted); }
+.project-index-page .works-wheel-cue i { border-color:var(--muted); }
+.project-index-page .works-wheel-cue i::after { background:var(--text); }
+
+@media (max-width:42rem) {
+  .project-index-page .works-wheel-index button.is-active { border-color:var(--muted); }
+}
