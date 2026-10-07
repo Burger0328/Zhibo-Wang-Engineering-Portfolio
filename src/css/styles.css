@@ -184,7 +184,7 @@ button { cursor:pointer; }
 .site-intro.is-leaving { animation:intro-exit .85s cubic-bezier(.76,0,.24,1) both; }
 .portfolio-entered .site-intro { display:none; }
 .js:not(.portfolio-entered) body.intro-home { overflow:hidden; }
-body { animation:page-enter .42s cubic-bezier(.2,.75,.25,1) both; }
+body { animation:page-enter .42s cubic-bezier(.2,.75,.25,1); }
 body.intro-home { animation:none; }
 body.page-restored { animation:none;opacity:1;transform:none; }
 body.page-is-leaving { animation:page-exit .26s ease both;pointer-events:none; }
